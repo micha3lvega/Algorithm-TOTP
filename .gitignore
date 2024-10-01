@@ -102,3 +102,5 @@ out/
 
 # Entornos de pruebas
 /karma.conf.js
+spring-and-totp-server/mvnw
+spring-and-totp-server/mvnw.cmd
