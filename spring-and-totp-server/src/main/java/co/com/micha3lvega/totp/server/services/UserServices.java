@@ -42,4 +42,26 @@ public class UserServices {
 		return repository.save(user);
 	}
 
+	/**
+	 * Metodo para iniciar sesión con el usuario
+	 *
+	 * @param username nombre de usuario
+	 * @param password contraseña del usuario
+	 *
+	 */
+	public User login(String username, String password) {
+
+		var user = repository.findByUsername(username);
+
+		if (user == null) {
+			throw new RuntimeException("Usuario no encontrado");
+		}
+
+		if (!encoder.matches(password, user.getPassword())) {
+			throw new RuntimeException("Contraseña incorrecta");
+		}
+
+		return user;
+	}
+
 }
