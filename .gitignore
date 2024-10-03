@@ -104,3 +104,4 @@ out/
 /karma.conf.js
 spring-and-totp-server/mvnw
 spring-and-totp-server/mvnw.cmd
+spring-and-totp-server/.codetogether.ignore
