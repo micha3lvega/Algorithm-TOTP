@@ -43,6 +43,11 @@ public class UserServices {
 	 * @throws RuntimeException si ya existe un usuario con el mismo nombre de usuario.
 	 */
 	public User createUser(User user) {
+
+		if (user == null || user.getUsername().isBlank() || user.getPassword().isEmpty()) {
+			throw new RuntimeException("Datos invalidos");
+		}
+
 		// Verificar que no exista el usuario
 		if (repository.existsByUsername(user.getUsername())) {
 			throw new RuntimeException("Ya existe el usuario: " + user.getUsername());
