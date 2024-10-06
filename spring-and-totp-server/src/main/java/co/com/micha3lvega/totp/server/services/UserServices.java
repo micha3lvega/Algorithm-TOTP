@@ -1,5 +1,6 @@
 package co.com.micha3lvega.totp.server.services;
 
+import org.jboss.aerogear.security.otp.Totp;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -7,31 +8,40 @@ import co.com.micha3lvega.totp.server.model.User;
 import co.com.micha3lvega.totp.server.repository.UserRepository;
 import co.com.micha3lvega.totp.server.util.TotpSecretKeyGenerator;
 
+/**
+ * Servicio que maneja las operaciones relacionadas con los usuarios. Proporciona métodos para crear un nuevo usuario, iniciar sesión y generar códigos TOTP.
+ */
 @Service
 public class UserServices {
 
 	private UserRepository repository;
-	private PasswordEncoder encoder; // Cambia aquí a PasswordEncoder
+	private PasswordEncoder encoder;
 
-	public UserServices(UserRepository repository, PasswordEncoder encoder) { // Cambia aquí también
+	/**
+	 * Constructor de la clase UserServices.
+	 *
+	 * @param repository el repositorio de usuarios para acceder a la base de datos.
+	 * @param encoder    el codificador de contraseñas utilizado para encriptar las contraseñas de los usuarios.
+	 */
+	public UserServices(UserRepository repository, PasswordEncoder encoder) {
 		this.repository = repository;
 		this.encoder = encoder;
 	}
 
 	/**
-	 * Metodo para crear un usuario
+	 * Crea un nuevo usuario en la base de datos.
 	 *
-	 * @param user datos del usuario a crear
-	 * @return Objecto con los datos del usuario
+	 * @param user el objeto User que contiene la información del nuevo usuario.
+	 * @return el usuario creado con la clave secreta generada y la contraseña encriptada.
+	 * @throws RuntimeException si ya existe un usuario con el mismo nombre de usuario.
 	 */
 	public User createUser(User user) {
-
-		// Buscar que no exxista el usuario
+		// Buscar que no exista el usuario
 		if (repository.existsByUsername(user.getUsername())) {
 			throw new RuntimeException("Ya existe el usuario: " + user.getUsername());
 		}
 
-		// Generar secretkey
+		// Generar secret key
 		var secretKey = TotpSecretKeyGenerator.generateSecretKey();
 		user.setSecretkey(secretKey);
 
@@ -43,14 +53,14 @@ public class UserServices {
 	}
 
 	/**
-	 * Metodo para iniciar sesión con el usuario
+	 * Inicia sesión de un usuario con su nombre de usuario y contraseña.
 	 *
-	 * @param username nombre de usuario
-	 * @param password contraseña del usuario
-	 *
+	 * @param username el nombre de usuario del usuario que intenta iniciar sesión.
+	 * @param password la contraseña del usuario que intenta iniciar sesión.
+	 * @return el objeto User si las credenciales son válidas.
+	 * @throws RuntimeException si el usuario no se encuentra o si la contraseña es incorrecta.
 	 */
 	public User login(String username, String password) {
-
 		var user = repository.findByUsername(username);
 
 		if (user == null) {
@@ -64,4 +74,14 @@ public class UserServices {
 		return user;
 	}
 
+	/**
+	 * Genera un código TOTP para el usuario.
+	 *
+	 * @param user el objeto User para el que se generará el código TOTP.
+	 * @return el código TOTP actual generado a partir de la clave secreta del usuario.
+	 */
+	public String generateTotpCode(User user) {
+		var totp = new Totp(user.getSecretkey());
+		return totp.now(); // Devuelve el código TOTP actual
+	}
 }
