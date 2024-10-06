@@ -71,7 +71,40 @@ public class UserServices {
 			throw new RuntimeException("Contraseña incorrecta");
 		}
 
-		return user;
+		// actualizar secret key
+		return updateSecretKey(user.getId());
+
+	}
+
+	/**
+	 * Actualiza la clave secreta (secret key) del usuario.
+	 *
+	 * Este método verifica si el usuario existe en el repositorio. Si existe, genera una nueva clave secreta utilizando el generador de claves secretas y la guarda en el repositorio.
+	 *
+	 * @param userid el ID del usuario cuyo secret key será actualizado.
+	 * @return el objeto User actualizado con la nueva clave secreta.
+	 * @throws IllegalArgumentException si el usuario es nulo o si no existe en el repositorio.
+	 */
+	public User updateSecretKey(String userid) {
+
+		if (userid == null || userid.isEmpty()) {
+			throw new IllegalArgumentException("El ID del usuario no puede ser nulo o vacío.");
+		}
+
+		// Buscar que el usuario exista
+		var optionalUser = repository.findById(userid);
+
+		if (optionalUser.isEmpty()) {
+			throw new IllegalArgumentException("El usuario no existe.");
+		}
+
+		// Obtener el usuario
+		var user = optionalUser.get();
+
+		// Generar nuevo secret key
+		user.setSecretkey(TotpSecretKeyGenerator.generateSecretKey());
+
+		return repository.save(user);
 	}
 
 	/**
