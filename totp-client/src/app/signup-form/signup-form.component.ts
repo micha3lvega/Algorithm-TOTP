@@ -79,6 +79,5 @@ export class SignupFormComponent {
       });
     }
 
-    console.log('onSubmit [end]');
   }
 }
