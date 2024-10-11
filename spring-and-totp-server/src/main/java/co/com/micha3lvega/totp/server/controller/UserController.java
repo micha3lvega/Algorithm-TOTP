@@ -1,5 +1,6 @@
 package co.com.micha3lvega.totp.server.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import co.com.micha3lvega.totp.server.model.User;
 import co.com.micha3lvega.totp.server.services.UserServices;
 import jakarta.validation.Valid;
 
+@CrossOrigin
 @RestController
 public class UserController {
 
@@ -23,6 +25,7 @@ public class UserController {
 
 		var user = User.builder().username(signUpDto.getUsername())
 				.password(signUpDto.getPassword()).build();
+
 		user = userServices.createUser(user);
 		user.setPassword(null); // no retornar el password
 		return user;
