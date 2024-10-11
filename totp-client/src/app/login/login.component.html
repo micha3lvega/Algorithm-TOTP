@@ -1,1 +1,61 @@
-<p>login works!</p>
+<div class="container">
+
+  <mat-toolbar color="primary" class="title">
+    <span class="fill-remaining-space">Iniciar sesión</span>
+  </mat-toolbar>
+
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" >
+
+    <div class="row">
+      <div class="col">
+        <mat-form-field class="form-element">
+          <input matInput type="text" placeholder="Nombre de usuario" formControlName="username">
+          <mat-error >
+            El nombre de usuario es obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col">
+        <mat-form-field class="form-element">
+          <input matInput type="password" placeholder="Ingresa tu contraseña" formControlName="password">
+          <mat-error >
+            La contraseña es obligatoria
+          </mat-error>
+          <mat-error >
+            La contraseña debe tener al menos 5 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <div class="row">
+
+          <div class="col">
+            <div class="error-msj" *ngIf="errorMsj !== ''">
+              {{errorMsj}}
+            </div>
+
+            <div class="info-msj" *ngIf="infoMsj !== ''">
+              {{infoMsj}}
+            </div>
+          </div>
+
+          <div class="col login-link">
+            <a routerLink="/signup">Crear usuario</a>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row card-button">
+      <div class="col">
+        <button mat-raised-button color="primary" type="submit" >
+          Iniciar sesion
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+</div>
