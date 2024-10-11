@@ -36,7 +36,9 @@ public class UserController {
 	@PostMapping("/login")
 	public User login(@RequestBody @Valid SingInDTO singIn) {
 
-		return userServices.login(singIn.getUsername(), singIn.getPassword());
+		var loginUser = userServices.login(singIn.getUsername(), singIn.getPassword());
+		loginUser.setPassword(null); // no retornar el password
+		return loginUser;
 
 	}
 
