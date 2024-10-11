@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import * as CryptoJS from 'crypto-js';
 
+import { environment } from '../../environments/environment';
+
 @Component({
   selector: 'app-totp',
   standalone: true,
@@ -12,6 +14,9 @@ import * as CryptoJS from 'crypto-js';
   styleUrl: './totp.component.css',
 })
 export class TotpComponent {
+
+  decriptValue:string|null=null;
+
   constructor(private router: Router) {
     this.checkUserLoggedIn();
   }
@@ -20,9 +25,9 @@ export class TotpComponent {
     const storedUserString = localStorage.getItem('user');
     if (storedUserString) {
       const user: User = JSON.parse(storedUserString);
-      var decriptKey = this.decryptValue(user.secretkey);
+      this.decriptValue = this.decryptValue(user.secretkey);
 
-      if (!decriptKey) {
+      if (!this.decriptValue) {
         this.router.navigate(['/login']);
       }
     } else {
@@ -30,13 +35,10 @@ export class TotpComponent {
     }
   }
 
-  decryptValue(encryptedValue:string) {
+  decryptValue(encryptedValue: string) {
 
-    const ivText = 'hdYXiwXs4twHxJYBNQivyA==';
-    const secretKeyText = 'WYIL06CsNqdsnjq+jrN7cw==';
-
-    const secretKey = CryptoJS.enc.Base64.parse(secretKeyText);
-    const iv = CryptoJS.enc.Base64.parse(ivText);
+    const ivText = environment.ivText;
+    const secretKeyText = environment.secretKeyText;
 
     try {
 
@@ -54,12 +56,7 @@ export class TotpComponent {
         padding: CryptoJS.pad.Pkcs7,
       });
 
-      const decryptedValue = decryptedBytes.toString(CryptoJS.enc.Utf8);
-      console.log(
-        'encrypt: ' + encryptedValue + ', decript: ' + decryptedValue
-      );
-
-      return decryptedValue;
+      return decryptedBytes.toString(CryptoJS.enc.Utf8);
     } catch (error) {
       console.error('Error decrypting value:', error);
     }
