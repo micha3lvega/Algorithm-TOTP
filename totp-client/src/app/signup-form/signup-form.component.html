@@ -4,14 +4,6 @@
     <span class="fill-remaining-space">Crear usuario</span>
   </mat-toolbar>
 
-  <div class="error-msj" *ngIf="errorMsj !== ''">
-    {{errorMsj}}
-  </div>
-
-  <div class="info-msj" *ngIf="infoMsj !== ''">
-    {{infoMsj}}
-  </div>
-
   <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
 
     <div class="row">
@@ -34,6 +26,24 @@
             La contraseña debe tener al menos 5 caracteres
           </mat-error>
         </mat-form-field>
+
+        <div class="row">
+
+          <div class="col">
+            <div class="error-msj" *ngIf="errorMsj !== ''">
+              {{errorMsj}}
+            </div>
+
+            <div class="info-msj" *ngIf="infoMsj !== ''">
+              {{infoMsj}}
+            </div>
+          </div>
+
+          <div class="col login-link">
+            <a routerLink="/login">Iniciar sesión</a>
+          </div>
+
+        </div>
       </div>
 
     </div>

@@ -27,10 +27,17 @@
   align-items: center;
 }
 
-.error-msj{
+.error-msj {
   color: red;
+  text-align: left;
 }
 
-.info-msj{
+.info-msj {
   color: green;
+  text-align: left;
+}
+
+.login-link {
+  text-align: right;
+  margin-top: -10px;
 }

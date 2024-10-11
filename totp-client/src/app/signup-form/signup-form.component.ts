@@ -15,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
+import { RouterModule } from '@angular/router';
+
 @Component({
   selector: 'app-signup-form',
   standalone: true,
@@ -24,6 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatButtonModule,
     CommonModule,
     MatToolbarModule,
+    RouterModule
   ],
   templateUrl: './signup-form.component.html',
   styleUrl: './signup-form.component.css',
