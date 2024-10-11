@@ -19,6 +19,9 @@ public class UserServices {
 	@Value("${secure.encript.aes.key}")
 	private String aesSecretKey;
 
+	@Value("${secure.encript.aes.iv}")
+	private String aesSecretIV;
+
 	private final UserRepository repository;
 	private final PasswordEncoder encoder;
 
@@ -130,7 +133,7 @@ public class UserServices {
 
 		// Encriptar el valor
 		try {
-			return AesUtil.encrypt(secretKey, aesSecretKey);
+			return AesUtil.encrypt(secretKey, aesSecretKey, aesSecretIV);
 		} catch (Exception e) {
 			throw new RuntimeException("Error al encriptar el secret key: " + e.getMessage(), e);
 		}
